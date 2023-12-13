@@ -8,6 +8,7 @@ namespace proyecto_final_3er_semestre_progra_C__WF
 {
     internal class ListaDobleEnlazada <T>
     {
+      
         private DoubleNode Head { get; set; }
         private DoubleNode LastNode { get; set; }
 

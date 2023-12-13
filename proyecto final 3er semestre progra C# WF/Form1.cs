@@ -12,6 +12,8 @@ using System.Threading;
 using System.Security;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using System.Windows.Forms.VisualStyles;
 
 namespace proyecto_final_3er_semestre_progra_C__WF
 {
@@ -23,6 +25,9 @@ namespace proyecto_final_3er_semestre_progra_C__WF
         private Queue<string> cola;
         private LinkedList<string> bicola;
         private SortedDictionary<int, Queue<string>> colaPrioridad;
+        private Tree tree = new Tree();
+        private Graph graph = new Graph();
+
         public Form1()
         {
             InitializeComponent();
@@ -32,6 +37,7 @@ namespace proyecto_final_3er_semestre_progra_C__WF
             cola = new Queue<string>();
             colaPrioridad = new SortedDictionary<int, Queue<string>>();
             bicola = new LinkedList<string>();
+
         }
 
         private int[] ArrayReset(int[] arr)
@@ -295,7 +301,71 @@ namespace proyecto_final_3er_semestre_progra_C__WF
         }
         //Final Codigo Listas
 
+        //Inicio Codigo Artbol
+        private void btnDeleteTree_Click(object sender, EventArgs e)
+        {
+            string nodeNameToDelete = txtFather.Text;
+            tree.DeleteNode(nodeNameToDelete, txtTree);
+        }
 
+        private void btnAddTree_Click(object sender, EventArgs e)
+        {
+            string parentNodeName = txtFather.Text;
+            string newNodeName = txtNewNodeTree.Text;
+            tree.AddNode(parentNodeName, newNodeName, txtTree);
+        }
+        //Final Codigo Artbol
+
+
+        //Inicio Codigo Grapho
+        private void btnAgregarVertice_Click(object sender, EventArgs e)
+        {
+            string verticeLabel = txtVertice.Text;
+
+            if (!string.IsNullOrEmpty(verticeLabel))
+            {
+                Point location = new Point(graph.Vertices.Count * 50, graph.Vertices.Count * 50);
+                Vertex vertex = new Vertex(verticeLabel, location);
+                graph.AddVertex(vertex);
+
+                // Dibujar el grafo
+                DibujarGrafo();
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un vértice válido.");
+            }
+        }
+
+        private void btnAgregarBorde_Click(object sender, EventArgs e)
+        {
+            string origenLabel = txtOrigen.Text;
+            string destinoLabel = txtDestino.Text;
+
+            Vertex origen = graph.Vertices.Find(v => v.Label == origenLabel);
+            Vertex destino = graph.Vertices.Find(v => v.Label == destinoLabel);
+
+            if (origen != null && destino != null)
+            {
+                Edge edge = new Edge(origen, destino);
+                graph.AddEdge(edge);
+
+                // Dibujar el grafo
+                DibujarGrafo();
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un origen y destino válidos.");
+            }
+        }
+        private void DibujarGrafo()
+        {
+            using (Graphics g = PTBGraphos.CreateGraphics())
+            {
+                graph.DrawGraph(g);
+            }
+        }
+        //Final Codigo Grapho
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -306,9 +376,6 @@ namespace proyecto_final_3er_semestre_progra_C__WF
 
         }
 
-        private void btnDeleteTree_Click(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }
